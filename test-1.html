@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>가디우스 성장 확인</title>
+  <script>
+    function cal() {
+      var tmpLv = 0;
+      var tmpSkill = 0;
+      var tmpMarbles = 0;
+      var tmpParamMarbles = 0;
+
+      var tmpFHp = 0;
+      var tmpFMp = 0;
+      var tmpFSp = 0;
+
+      var tmpTHp = 0;
+      var tmpTMp = 0;
+      var tmpTSp = 0;
+
+      tmpLv = document.getElementById('LV').value;
+
+      tmpFHp = document.getElementById('FHP').value;
+      tmpFMp = document.getElementById('FMP').value;
+      tmpFSp = document.getElementById('FSP').value;
+
+      tmpTHp = document.getElementById('THP').value;
+      tmpTMp = document.getElementById('TMP').value;
+      tmpTSp = document.getElementById('TSP').value;
+
+      document.getElementById('HP').value = (tmpTHp - tmpFHp) / (tmpLv - 1);
+      document.getElementById('MP').value = (tmpTMp - tmpFMp) / (tmpLv - 1);
+      document.getElementById('SP').value = (tmpTSp - tmpFSp) / (tmpLv - 1);
+
+      if(tmpLv < 11){
+        //2~10 3개 지급
+        tmpMarbles = tmpLv * 3 - 3; //max 27
+      }else if(tmpLv < 31){
+        //11~30 2개 지급
+        tmpMarbles = (tmpLv - 10) * 2 + 27; //max 67
+      }else if(tmpLv < 51){
+        //31~50 4개 지급
+        tmpMarbles = (tmpLv - 30) * 4 + 67; //max 147
+      }else if(tmpLv < 71){
+        //51~70 5개 지급
+        tmpMarbles = (tmpLv - 50) * 5 + 147; //max 247
+      }else if(tmpLv < 81){
+        //71~80 6개 지급
+        tmpMarbles = (tmpLv - 70) * 6 + 247; //max 307
+      }else if(tmpLv < 91){
+        //81~90 7개 지급
+        tmpMarbles = (tmpLv - 80) * 7 + 307; //max 377
+      }else{
+        //91 8개 지급
+        tmpMarbles = (tmpLv - 90) * 8 + 377; //max
+      }
+
+      tmpMarbles += Number(document.getElementById('ADD_MARBLES').value);
+
+      tmpParamMarbles += Number(paramCal(document.getElementById('STR').value));
+      tmpParamMarbles += Number(paramCal(document.getElementById('AGR').value));
+      tmpParamMarbles += Number(paramCal(document.getElementById('DEX').value));
+      tmpParamMarbles += Number(paramCal(document.getElementById('INT').value));
+      tmpParamMarbles += Number(paramCal(document.getElementById('VIT').value));
+      tmpParamMarbles += Number(paramCal(document.getElementById('MEN').value));
+      tmpParamMarbles -= 72; //초기 스탯 마이너스
+
+      tmpSkill += document.getElementById('SKILL1_LV').value - 1;
+      tmpSkill += document.getElementById('SKILL2_LV').value - 1;
+      tmpSkill += document.getElementById('SKILL3_LV').value - 1;
+      tmpSkill += document.getElementById('SKILL4_LV').value - 1;
+
+      document.getElementById('PARAM_MARBLES').value = tmpParamMarbles;
+      document.getElementById('FAIL_MARBLES').value = tmpMarbles - (tmpParamMarbles + tmpSkill + Number(document.getElementById('ADDSKILL').value)) - Number(document.getElementById('TEMP_MARBLES').value);
+      document.getElementById('TOTAL_MARBLES').value = tmpMarbles;
+
+    }
+
+    function paramCal(paramLv) {
+      var retunParam = 0;
+      if(paramLv < 16){
+        retunParam = paramLv;
+      }else if(paramLv < 21){
+        retunParam = (paramLv - 15) * 3 + 15;
+      }else {
+        retunParam = (paramLv - 20) * 4 + 30;
+      }
+      return retunParam;
+    }
+  </script>
+</head>
+<body>
+<table>
+  <tbody>
+  <tr>
+    <th>레벨</th>
+    <td><input type="number" id="LV" maxlength="3" value="1"></td>
+  </tr>
+<!--  <tr>-->
+<!--    <th>주직업</th>-->
+<!--    <td colspan="2">-->
+<!--      <select id="FJOB" >-->
+<!--        <option>전사</option>-->
+<!--        <option>도둑</option>-->
+<!--        <option>검투사</option>-->
+<!--        <option>마법사</option>-->
+<!--        <option>성직자</option>-->
+<!--      </select>-->
+<!--    </td>-->
+<!--  </tr>-->
+<!--  <tr>-->
+<!--    <th>보조직업</th>-->
+<!--    <td colspan="2">-->
+<!--      <select id="TJOB" >-->
+<!--        <option>전사</option>-->
+<!--      </select>-->
+<!--    </td>-->
+<!--  </tr>-->
+  <tr>
+    <th>초기 HP</th>
+    <th>초기 MP</th>
+    <th>초기 SP</th>
+  </tr>
+  <tr>
+    <th><input type="number" id="FHP" maxlength="3" value="30" style="text-align: center"/></th>
+    <th><input type="number" id="FMP" maxlength="3" value="30" style="text-align: center"/></th>
+    <th><input type="number" id="FSP" maxlength="3" value="30" style="text-align: center"/></th>
+  </tr>
+  <tr>
+    <th>현재 HP</th>
+    <th>현재 MP</th>
+    <th>현재 SP</th>
+  </tr>
+  <tr>
+    <th><input type="number" id="THP" maxlength="3" value="30" style="text-align: center"/></th>
+    <th><input type="number" id="TMP" maxlength="3" value="30" style="text-align: center"/></th>
+    <th><input type="number" id="TSP" maxlength="3" value="30" style="text-align: center"/></th>
+  </tr>
+  <tr>
+    <th>현재 STR</th>
+    <th>현재 AGR</th>
+    <th>현재 DEX</th>
+  </tr>
+  <tr>
+    <th><input type="number" id="STR" maxlength="3" value="15" style="text-align: center"/></th>
+    <th><input type="number" id="AGR" maxlength="3" value="10" style="text-align: center"/></th>
+    <th><input type="number" id="DEX" maxlength="3" value="11" style="text-align: center"/></th>
+  </tr>
+  <tr>
+    <th>현재 INT</th>
+    <th>현재 VIT</th>
+    <th>현재 MEN</th>
+  </tr>
+  <tr>
+    <th><input type="number" id="INT" maxlength="3" value="6" style="text-align: center"/></th>
+    <th><input type="number" id="VIT" maxlength="3" value="15" style="text-align: center"/></th>
+    <th><input type="number" id="MEN" maxlength="3" value="15" style="text-align: center"/></th>
+  </tr>
+  <tr>
+    <th>소원 구슬</th>
+    <td><input type="number" id="ADD_MARBLES" maxlength="3" value="0"></td>
+  </tr>
+  <tr>
+    <th>남은 구슬</th>
+    <td><input type="number" id="TEMP_MARBLES" maxlength="3" value="0"></td>
+  </tr>
+  <tr>
+    <th>스킬 기능 1</th>
+    <td><input type="tel" id="SKILL1_LV" maxlength="2" value="1" ></td>
+  </tr>
+  <tr>
+    <th>스킬 기능 2</th>
+    <td><input type="number" id="SKILL2_LV" maxlength="2" value="1" ></td>
+  </tr>
+  <tr>
+    <th>스킬 기능 3</th>
+    <td><input type="text" id="SKILL3_LV" maxlength="2" value="1" ></td>
+  </tr>
+  <tr>
+    <th>스킬 기능 4</th>
+    <td><input type="text" id="SKILL4_LV" maxlength="2" value="1" ></td>
+  </tr>
+  <tr>
+    <th>스킬 배운 구슬</th>
+    <td><input type="text" id="ADDSKILL" maxlength="2" value="0" ></td>
+  </tr>
+  <tr>
+    <th colspan="3"><button onclick="cal()"> 계산 </button></th>
+  </tr>
+  <tr>
+    <th>평균 HP</th>
+    <th>평균 MP</th>
+    <th>평균 SP</th>
+  </tr>
+  <tr>
+    <th><input type="number" id="HP" maxlength="3" value="0" style="text-align: center" disabled/></th>
+    <th><input type="number" id="MP" maxlength="3" value="0" style="text-align: center" disabled/></th>
+    <th><input type="number" id="SP" maxlength="3" value="0" style="text-align: center" disabled/></th>
+  </tr>
+  <tr>
+    <th>총구슬</th>
+    <td><input type="number" id="TOTAL_MARBLES" maxlength="3" value="0" disabled></td>
+  </tr>
+  <tr>
+    <th>파라미터에 들어간 구슬</th>
+    <td><input type="number" id="PARAM_MARBLES" maxlength="3" value="0" disabled></td>
+  </tr>
+  <tr>
+    <th>실패된 구슬</th>
+    <td><input type="number" id="FAIL_MARBLES" maxlength="3" value="0" disabled></td>
+  </tr>
+
+  </tbody>
+</table>
+</body>
+</html>
